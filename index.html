@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>GANJI - Your money. Your record. Your control.</title>
+  <meta name="description" content="GANJI is a simple, lightweight personal expense-tracking application designed for Android and iOS. Record and account for every Kenyan Shilling.">
+  <meta name="theme-color" content="#D95720">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GANJI">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/svg+xml" href="./icons/favicon.svg">
+  <link rel="apple-touch-icon" href="./icons/icon-192.svg">
+  
+  <!-- Modern Clean Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body data-theme="warm">
+  <!-- Desktop Simulator Outer Shell -->
+  <div id="desktop-wrapper" class="desktop-wrapper">
+    
+    <!-- Desktop Top Control Bar (Only shown on wide desktop screens) -->
+    <header class="desktop-topbar" id="desktop-topbar">
+      <div class="desktop-brand">
+        <div class="logo-gem">
+          <svg viewBox="0 0 24 24" class="logo-icon" fill="currentColor">
+            <path d="M21 18V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM5 7h14v2H5V7zm0 4h10v2H5v-2zm0 4h7v2H5v-2zm12-1a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">GANJI</span>
+          <span class="brand-sub">Personal Expense Notebook</span>
+        </div>
+      </div>
+
+      <div class="desktop-mode-toggles">
+        <button type="button" id="toggle-frame-btn" class="frame-toggle-btn active" title="Toggle Mobile Device Frame View">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="5" y="2" width="14" height="20" rx="3" ry="3"></rect>
+            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+          </svg>
+          <span class="btn-label">Device Preview</span>
+        </button>
+        <button type="button" id="toggle-responsive-btn" class="frame-toggle-btn" title="Toggle Fullscreen Responsive View">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          <span class="btn-label">Responsive</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Simulated Phone Enclosure (active in device preview mode on desktop) -->
+    <div class="phone-frame" id="phone-frame">
+      <div class="phone-speaker"></div>
+      <div class="phone-camera"></div>
+
+      <!-- App Screen Viewport -->
+      <div class="app-viewport" id="app-viewport">
+
+        <!-- App Header Bar -->
+        <header class="app-header">
+          <div class="header-left">
+            <div class="header-logo-badge">
+              <span class="logo-letter">G</span>
+            </div>
+            <div class="header-text-group">
+              <h1 class="app-name">GANJI</h1>
+              <p class="app-tagline">Your money. Your record.</p>
+            </div>
+          </div>
+          
+          <div class="header-right">
+            <div class="currency-chip" id="currency-display-badge" title="Active Currency">
+              <svg viewBox="0 0 24 24" class="chip-flag-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v12M15 9.5H9.5a2.5 2.5 0 0 0 0 5h5"></path>
+              </svg>
+              <span class="chip-label">KES</span>
+            </div>
+            <button type="button" class="install-pwa-btn" id="install-app-btn" style="display: none;" title="Install GANJI on this device">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Install</span>
+            </button>
+            <button type="button" class="icon-btn" id="open-settings-btn" aria-label="Settings and Budget">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <!-- Main Scrollable App Container -->
+        <main class="app-content" id="app-content">
+
+          <!-- ================= TAB 1: DASHBOARD ================= -->
+          <section id="tab-dashboard" class="tab-pane active" aria-label="Dashboard">
+            
+            <!-- Welcome Greeting & Day Banner -->
+            <div class="greeting-banner">
+              <div class="greeting-text">
+                <span class="greeting-time" id="greeting-time">Habari!</span>
+                <span class="greeting-date" id="greeting-date">Today's Overview</span>
+              </div>
+              <div class="offline-pill" id="offline-pill" title="Works completely offline">
+                <span class="pulse-dot"></span>
+                <span>Offline-ready</span>
+              </div>
+            </div>
+
+            <!-- Hero: Today's Total Spending Card -->
+            <div class="hero-spend-card">
+              <div class="hero-bg-accent"></div>
+              <div class="hero-header">
+                <span class="hero-label">TODAY'S SPENDING</span>
+                <span class="hero-badge" id="hero-today-date">Today</span>
+              </div>
+              <div class="hero-amount-wrapper">
+                <span class="hero-currency">KES</span>
+                <h2 class="hero-amount" id="dash-today-total">0</h2>
+              </div>
+              <div class="hero-footer">
+                <div class="hero-stat-pill">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                  </svg>
+                  <span id="dash-today-count">0 expenses logged today</span>
+                </div>
+                <button type="button" class="hero-quick-add-btn" id="hero-quick-add-btn">
+                  + Add Expense
+                </button>
+              </div>
+            </div>
+
+            <!-- Spending Summary Grid (Weekly & Monthly + Transactions) -->
+            <div class="summary-cards-grid">
+              
+              <!-- Weekly Spending Summary -->
+              <div class="summary-card">
+                <div class="card-icon-wrapper amber">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                </div>
+                <div class="card-details">
+                  <span class="card-title">This Week</span>
+                  <div class="card-amount-line">
+                    <span class="card-curr">KES</span>
+                    <span class="card-value" id="dash-weekly-total">0</span>
+                  </div>
+                  <span class="card-subtext" id="dash-weekly-sub">Past 7 days total</span>
+                </div>
+              </div>
+
+              <!-- Monthly Spending Overview -->
+              <div class="summary-card">
+                <div class="card-icon-wrapper orange">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                </div>
+                <div class="card-details">
+                  <span class="card-title" id="dash-month-title">This Month</span>
+                  <div class="card-amount-line">
+                    <span class="card-curr">KES</span>
+                    <span class="card-value" id="dash-monthly-total">0</span>
+                  </div>
+                  
+                  <!-- Monthly Budget Progress Bar -->
+                  <div class="budget-progress-container" id="budget-progress-container">
+                    <div class="budget-bar-track">
+                      <div class="budget-bar-fill" id="dash-budget-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="budget-meta">
+                      <span id="dash-budget-percent">0% of budget</span>
+                      <span id="dash-budget-cap">Cap: KES 50,000</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Total Number of Recorded Transactions -->
+              <div class="summary-card full-width-card">
+                <div class="card-icon-wrapper teal">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                </div>
+                <div class="card-details-horizontal">
+                  <div>
+                    <span class="card-title">Recorded Transactions</span>
+                    <div class="count-badge-row">
+                      <span class="card-bold-count" id="dash-total-transactions">0</span>
+                      <span class="card-subtext-inline">total expenses in your notebook</span>
+                    </div>
+                  </div>
+                  <div class="stat-pills-row">
+                    <span class="mini-pill" id="dash-month-count">0 this month</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Tap Shortcuts for Common Kenyan Daily Expenses -->
+            <div class="section-block">
+              <div class="section-header">
+                <h3 class="section-title">Quick Log Shortcuts</h3>
+                <span class="section-hint">1-tap presets</span>
+              </div>
+              <div class="quick-presets-scroll">
+                <button type="button" class="preset-chip" data-desc="Matatu Fare" data-amount="100" data-cat="Transport">
+                  <span class="preset-icon">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="4" width="18" height="13" rx="2"></rect>
+                      <path d="M4 11h16M8 4v7M16 4v7"></path>
+                      <circle cx="7" cy="20" r="1.5"></circle>
+                      <circle cx="17" cy="20" r="1.5"></circle>
+                    </svg>
+                  </span>
+                  <span class="preset-text">Matatu</span>
+                  <span class="preset-val">KES 100</span>
+                </button>
+                <button type="button" class="preset-chip" data-desc="Choma / Lunch" data-amount="350" data-cat="Food & Drinks">
+                  <span class="preset-icon">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M18 2v6a3 3 0 0 1-3 3 3 3 0 0 1-3-3V2"></path>
+                      <path d="M15 2v10"></path>
+                      <line x1="12" y1="2" x2="12" y2="22"></line>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                  </span>
+                  <span class="preset-text">Lunch</span>
+                  <span class="preset-val">KES 350</span>
+                </button>
+                <button type="button" class="preset-chip" data-desc="KPLC Token" data-amount="1000" data-cat="Bills & Utilities">
+                  <span class="preset-icon">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                  </span>
+                  <span class="preset-text">KPLC Token</span>
+                  <span class="preset-val">KES 1,000</span>
+                </button>
+                <button type="button" class="preset-chip" data-desc="Supermarket Groceries" data-amount="1500" data-cat="Shopping">
+                  <span class="preset-icon">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                      <path d="M3 6h18"></path>
+                      <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                  </span>
+                  <span class="preset-text">Naivas</span>
+                  <span class="preset-val">KES 1,500</span>
+                </button>
+                <button type="button" class="preset-chip" data-desc="Airtime / Data" data-amount="200" data-cat="Bills & Utilities">
+                  <span class="preset-icon">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect>
+                      <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                    </svg>
+                  </span>
+                  <span class="preset-text">Airtime</span>
+                  <span class="preset-val">KES 200</span>
+                </button>
+                <button type="button" class="preset-chip" data-desc="Coffee / Tea" data-amount="150" data-cat="Food & Drinks">
+                  <span class="preset-icon">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17 8h1a4 4 0 1 1 0 8h-1"></path>
+                      <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"></path>
+                      <line x1="6" y1="2" x2="6" y2="4"></line>
+                      <line x1="10" y1="2" x2="10" y2="4"></line>
+                      <line x1="14" y1="2" x2="14" y2="4"></line>
+                    </svg>
+                  </span>
+                  <span class="preset-text">Kahawa</span>
+                  <span class="preset-val">KES 150</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Mini 7-Day Spending Sparkline -->
+            <div class="section-block">
+              <div class="section-header">
+                <h3 class="section-title">Last 7 Days Activity</h3>
+                <span class="section-hint" id="sparkline-trend-label">Daily distribution</span>
+              </div>
+              <div class="sparkline-card">
+                <div class="sparkline-bars" id="sparkline-bars">
+                  <!-- Generated dynamically in app.js -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Expenses List on Dashboard -->
+            <div class="section-block">
+              <div class="section-header">
+                <h3 class="section-title">Recent Expenses</h3>
+                <button type="button" class="link-btn" id="dash-view-all-btn">View All →</button>
+              </div>
+              <div class="transaction-list" id="dash-recent-list">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- Financial Mindfulness Quote Banner -->
+            <div class="mindfulness-banner">
+              <div class="quote-mark">“</div>
+              <p class="quote-text">Account for every shilling, understand your habits, and take back control of your financial freedom.</p>
+              <span class="quote-author">GANJI Philosophy</span>
+            </div>
+
+          </section>
+
+          <!-- ================= TAB 2: TRANSACTIONS (HISTORY) ================= -->
+          <section id="tab-transactions" class="tab-pane" aria-label="Transaction History">
+            
+            <div class="view-header">
+              <div class="view-title-group">
+                <h2 class="view-title">Transaction History</h2>
+                <p class="view-subtitle" id="tx-filtered-count">Showing all recorded spending</p>
+              </div>
+              <button type="button" class="export-chip-btn" id="export-history-btn" title="Export transactions">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Export CSV</span>
+              </button>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-box">
+              <div class="search-input-wrapper">
+                <svg viewBox="0 0 24 24" class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="tx-search-input" placeholder="Search expenses (e.g. Matatu, Naivas, Token)..." autocomplete="off">
+                <button type="button" id="tx-search-clear" class="search-clear-btn" style="display: none;" aria-label="Clear search">✕</button>
+              </div>
+            </div>
+
+            <!-- Filter Chips: Date Range -->
+            <div class="filters-scroll">
+              <button type="button" class="filter-pill active" data-time-filter="all">All Time</button>
+              <button type="button" class="filter-pill" data-time-filter="today">Today</button>
+              <button type="button" class="filter-pill" data-time-filter="week">This Week</button>
+              <button type="button" class="filter-pill" data-time-filter="month">This Month</button>
+              <button type="button" class="filter-pill" data-time-filter="lastmonth">Last Month</button>
+            </div>
+
+            <!-- Filter Chips: Category Selector -->
+            <div class="category-filters-scroll" id="category-filter-chips">
+              <button type="button" class="cat-pill active" data-cat-filter="ALL">All Categories</button>
+              <!-- Dynamically populated categories -->
+            </div>
+
+            <!-- Sorting & Total Bar -->
+            <div class="sort-and-stats-bar">
+              <div class="filtered-total-badge">
+                <span class="label">Filtered Total:</span>
+                <span class="value" id="tx-filtered-total">KES 0</span>
+              </div>
+              <div class="sort-dropdown-wrap">
+                <label for="tx-sort-select" class="visually-hidden">Sort By</label>
+                <select id="tx-sort-select" class="sort-select">
+                  <option value="date-desc">Newest First</option>
+                  <option value="date-asc">Oldest First</option>
+                  <option value="amount-desc">Highest Amount</option>
+                  <option value="amount-asc">Lowest Amount</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Transaction Grouped List -->
+            <div class="transaction-history-container" id="tx-history-container">
+              <!-- Dynamically populated grouped transactions -->
+            </div>
+
+            <!-- Empty State Container -->
+            <div class="empty-state" id="tx-empty-state" style="display: none;">
+              <div class="empty-icon-box">
+                <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+              </div>
+              <h4 class="empty-title">No expenses found</h4>
+              <p class="empty-desc">No matching records match your filter. Try adjusting your search or add a new expense.</p>
+              <button type="button" class="primary-btn empty-add-btn" id="empty-add-btn">+ Record Expense</button>
+            </div>
+
+          </section>
+
+          <!-- ================= TAB 3: SPENDING INSIGHTS ================= -->
+          <section id="tab-insights" class="tab-pane" aria-label="Spending Insights">
+            
+            <div class="view-header">
+              <div class="view-title-group">
+                <h2 class="view-title">Spending Insights</h2>
+                <p class="view-subtitle">Understand where your shillings go</p>
+              </div>
+
+              <!-- Time Frame Selector -->
+              <div class="insights-period-switch">
+                <button type="button" class="period-btn active" data-period="month">Month</button>
+                <button type="button" class="period-btn" data-period="week">Week</button>
+                <button type="button" class="period-btn" data-period="all">All</button>
+              </div>
+            </div>
+
+            <!-- Insights Key Metrics Cards -->
+            <div class="insights-kpi-grid">
+              <div class="kpi-card">
+                <span class="kpi-label">Total Spent</span>
+                <div class="kpi-value-row">
+                  <span class="kpi-curr">KES</span>
+                  <span class="kpi-val" id="insights-total-spent">0</span>
+                </div>
+                <span class="kpi-sub" id="insights-period-label">In selected period</span>
+              </div>
+              <div class="kpi-card">
+                <span class="kpi-label">Daily Average</span>
+                <div class="kpi-value-row">
+                  <span class="kpi-curr">KES</span>
+                  <span class="kpi-val" id="insights-daily-avg">0</span>
+                </div>
+                <span class="kpi-sub">Per active day</span>
+              </div>
+            </div>
+
+            <!-- Top Spending Category Alert Card -->
+            <div class="top-category-alert" id="insights-top-alert">
+              <div class="alert-icon-box" id="insights-top-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                  <path d="M3 6h18"></path>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+              </div>
+              <div class="alert-body">
+                <span class="alert-title" id="insights-top-title">Top Expense: Transport</span>
+                <p class="alert-text" id="insights-top-desc">Transport makes up 35% of your total spending. Consider carpooling or weekly passes to save shillings.</p>
+              </div>
+            </div>
+
+            <!-- Category Spending Interactive Donut Chart -->
+            <div class="section-block">
+              <div class="section-header">
+                <h3 class="section-title">Category Breakdown</h3>
+                <span class="section-hint">Tap segments for details</span>
+              </div>
+              
+              <div class="donut-chart-card">
+                <div class="chart-canvas-wrapper">
+                  <svg id="donut-svg" class="donut-svg" viewBox="0 0 240 240">
+                    <!-- Slices generated dynamically -->
+                  </svg>
+                  <div class="donut-center-info">
+                    <span class="center-sub">Total</span>
+                    <span class="center-amount" id="donut-center-amount">0</span>
+                    <span class="center-curr">KES</span>
+                  </div>
+                </div>
+
+                <!-- Legend / Category Breakdown List -->
+                <div class="donut-legend-list" id="donut-legend-list">
+                  <!-- Dynamically populated -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Weekly 7-Day Bar Comparison Chart -->
+            <div class="section-block">
+              <div class="section-header">
+                <h3 class="section-title">Day of Week Spending</h3>
+                <span class="section-hint">Spending patterns</span>
+              </div>
+              
+              <div class="barchart-card">
+                <div class="barchart-container" id="insights-barchart">
+                  <!-- Dynamically rendered 7-day bars -->
+                </div>
+                <div class="barchart-footer">
+                  <span class="footer-tip" id="insights-peak-day">Highest spend day: Saturday</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ranked Category Spending Progress Bars -->
+            <div class="section-block">
+              <div class="section-header">
+                <h3 class="section-title">Ranked Expenses by Category</h3>
+                <span class="section-hint">Highest to lowest</span>
+              </div>
+              <div class="ranked-categories-card" id="ranked-categories-container">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+          </section>
+
+          <!-- ================= TAB 4: SETTINGS & NOTEBOOK INFO ================= -->
+          <section id="tab-settings" class="tab-pane" aria-label="Settings">
+            
+            <div class="view-header">
+              <div class="view-title-group">
+                <h2 class="view-title">Settings & Notebook</h2>
+                <p class="view-subtitle">Manage preferences and your offline data</p>
+              </div>
+            </div>
+
+            <!-- Monthly Budget Settings Card -->
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <div class="card-icon-wrapper orange">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path>
+                    <line x1="12" y1="6" x2="12" y2="8"></line>
+                    <line x1="12" y1="16" x2="12" y2="18"></line>
+                  </svg>
+                </div>
+                <div class="header-titles">
+                  <h3 class="card-heading">Monthly Budget Cap</h3>
+                  <p class="card-subheading">Track against a spending limit</p>
+                </div>
+              </div>
+              <div class="settings-input-group">
+                <label for="setting-budget-input" class="input-label">Target Limit (KES)</label>
+                <div class="input-with-affix">
+                  <span class="affix-text">KES</span>
+                  <input type="number" id="setting-budget-input" min="1000" step="500" value="50000" class="clean-number-input">
+                  <button type="button" class="mini-save-btn" id="save-budget-btn">Save</button>
+                </div>
+                <span class="field-hint">Used for the monthly dashboard progress bar.</span>
+              </div>
+            </div>
+
+            <!-- Preferences (Sound / Haptics / Theme) -->
+            <div class="settings-card">
+              <h3 class="card-heading margin-b-sm">App Experience</h3>
+              
+              <div class="setting-toggle-row">
+                <div class="toggle-info">
+                  <span class="toggle-title">Audio & Sound Feedback</span>
+                  <span class="toggle-desc">Subtle tap sounds on logging expenses</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="setting-sound-toggle" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="setting-toggle-row">
+                <div class="toggle-info">
+                  <span class="toggle-title">Haptic Vibration</span>
+                  <span class="toggle-desc">Tactile response on mobile devices</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="setting-haptic-toggle" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+
+              <div class="setting-toggle-row">
+                <div class="toggle-info">
+                  <span class="toggle-title">Espresso Dark Theme</span>
+                  <span class="toggle-desc">Warm dark contrast for night recording</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="setting-theme-toggle">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Data Management & Backups -->
+            <div class="settings-card">
+              <h3 class="card-heading margin-b-sm">Data & Local Storage</h3>
+              <p class="card-subheading margin-b-md">Your financial records are stored securely on your device. Never transmitted to third parties.</p>
+
+              <div class="settings-actions-list">
+                <!-- Export to CSV -->
+                <button type="button" class="settings-action-row" id="btn-export-csv">
+                  <div class="action-left">
+                    <span class="action-icon">
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="8" y1="13" x2="16" y2="13"></line>
+                        <line x1="8" y1="17" x2="16" y2="17"></line>
+                        <line x1="10" y1="9" x2="8" y2="9"></line>
+                      </svg>
+                    </span>
+                    <div class="action-text">
+                      <span class="action-name">Export to CSV Spreadsheet</span>
+                      <span class="action-sub">Download for Excel / Google Sheets</span>
+                    </div>
+                  </div>
+                  <span class="action-arrow">→</span>
+                </button>
+
+                <!-- Export JSON Backup -->
+                <button type="button" class="settings-action-row" id="btn-export-json">
+                  <div class="action-left">
+                    <span class="action-icon">
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                      </svg>
+                    </span>
+                    <div class="action-text">
+                      <span class="action-name">Backup All Data (JSON)</span>
+                      <span class="action-sub">Save complete notebook offline</span>
+                    </div>
+                  </div>
+                  <span class="action-arrow">→</span>
+                </button>
+
+                <!-- Import JSON Backup -->
+                <label class="settings-action-row" for="import-json-file">
+                  <div class="action-left">
+                    <span class="action-icon">
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                      </svg>
+                    </span>
+                    <div class="action-text">
+                      <span class="action-name">Restore from Backup (JSON)</span>
+                      <span class="action-sub">Load previously saved data</span>
+                    </div>
+                  </div>
+                  <span class="action-arrow">→</span>
+                  <input type="file" id="import-json-file" accept=".json" style="display: none;">
+                </label>
+
+                <!-- Reset to Demo Data -->
+                <button type="button" class="settings-action-row" id="btn-reset-demo">
+                  <div class="action-left">
+                    <span class="action-icon">
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path>
+                        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+                        <path d="M16 21h5v-5"></path>
+                      </svg>
+                    </span>
+                    <div class="action-text">
+                      <span class="action-name">Load Kenyan Demo Records</span>
+                      <span class="action-sub">Populate with realistic sample expenses</span>
+                    </div>
+                  </div>
+                  <span class="action-arrow">→</span>
+                </button>
+
+                <!-- Clear All Records -->
+                <button type="button" class="settings-action-row danger-action" id="btn-clear-data">
+                  <div class="action-left">
+                    <span class="action-icon">
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                      </svg>
+                    </span>
+                    <div class="action-text">
+                      <span class="action-name">Clear All Expenses</span>
+                      <span class="action-sub">Permanently delete all stored records</span>
+                    </div>
+                  </div>
+                  <span class="action-arrow">→</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- About & Philosophy Card -->
+            <div class="settings-card about-card">
+              <div class="about-branding">
+                <div class="about-logo">G</div>
+                <h4 class="about-title">GANJI</h4>
+                <p class="about-tag">Your money. Your record. Your control.</p>
+              </div>
+              <p class="about-desc">
+                GANJI is not a complicated banking app. It is a personal digital expense notebook designed to help you account for every shilling, understand your spending habits, and build conscious wealth.
+              </p>
+              <div class="about-badges">
+                <span class="tech-badge">Version 1.0.0</span>
+                <span class="tech-badge">Offline-First</span>
+                <span class="tech-badge">KES Ready</span>
+                <span class="tech-badge">No Registration Needed</span>
+              </div>
+            </div>
+
+          </section>
+
+        </main>
+
+        <!-- Floating Action Button (+ Add Expense) -->
+        <button type="button" class="fab-add-btn" id="fab-add-btn" aria-label="Record New Expense">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+
+        <!-- Mobile Bottom Navigation Bar -->
+        <nav class="bottom-nav-bar" aria-label="Main Navigation">
+          <button type="button" class="nav-item active" data-target="tab-dashboard" id="nav-dashboard">
+            <div class="nav-icon-wrap">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="9"></rect>
+                <rect x="14" y="3" width="7" height="5"></rect>
+                <rect x="14" y="12" width="7" height="9"></rect>
+                <rect x="3" y="16" width="7" height="5"></rect>
+              </svg>
+            </div>
+            <span class="nav-label">Dashboard</span>
+          </button>
+
+          <button type="button" class="nav-item" data-target="tab-transactions" id="nav-transactions">
+            <div class="nav-icon-wrap">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+            </div>
+            <span class="nav-label">History</span>
+          </button>
+
+          <!-- Space for centered FAB -->
+          <div class="nav-center-spacer"></div>
+
+          <button type="button" class="nav-item" data-target="tab-insights" id="nav-insights">
+            <div class="nav-icon-wrap">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </div>
+            <span class="nav-label">Insights</span>
+          </button>
+
+          <button type="button" class="nav-item" data-target="tab-settings" id="nav-settings">
+            <div class="nav-icon-wrap">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </div>
+            <span class="nav-label">Settings</span>
+          </button>
+        </nav>
+
+        <!-- ================= MODAL / BOTTOM SHEET: ADD EXPENSE ================= -->
+        <div class="sheet-backdrop" id="add-sheet-backdrop">
+          <div class="bottom-sheet" id="add-expense-sheet">
+            <div class="sheet-drag-handle"></div>
+            
+            <div class="sheet-header">
+              <h3 class="sheet-title">Record Expense</h3>
+              <button type="button" class="sheet-close-btn" id="close-add-sheet-btn">✕</button>
+            </div>
+
+            <form id="add-expense-form" class="sheet-form">
+              
+              <!-- Big Amount Input -->
+              <div class="amount-input-box">
+                <span class="amount-currency-prefix">KES</span>
+                <input type="number" id="expense-amount-input" class="amount-field" placeholder="0" min="1" step="any" required autofocus>
+              </div>
+
+              <!-- Quick Increment Chips -->
+              <div class="amount-quick-increments">
+                <button type="button" class="inc-btn" data-inc="50">+50</button>
+                <button type="button" class="inc-btn" data-inc="100">+100</button>
+                <button type="button" class="inc-btn" data-inc="200">+200</button>
+                <button type="button" class="inc-btn" data-inc="500">+500</button>
+                <button type="button" class="inc-btn" data-inc="1000">+1,000</button>
+                <button type="button" class="inc-btn" data-inc="2000">+2,000</button>
+              </div>
+
+              <!-- Description Field with Quick Suggestions -->
+              <div class="form-field">
+                <label for="expense-desc-input" class="form-label">Description</label>
+                <input type="text" id="expense-desc-input" class="form-input" placeholder="What did you spend on? (e.g. Lunch)" required>
+                
+                <!-- Quick Description Suggestions -->
+                <div class="quick-suggestion-chips" id="quick-desc-chips">
+                  <span class="sugg-chip" data-text="Matatu fare" data-cat="Transport">Matatu fare</span>
+                  <span class="sugg-chip" data-text="Lunch" data-cat="Food & Drinks">Lunch</span>
+                  <span class="sugg-chip" data-text="Groceries" data-cat="Shopping">Groceries</span>
+                  <span class="sugg-chip" data-text="KPLC Token" data-cat="Bills & Utilities">KPLC Token</span>
+                  <span class="sugg-chip" data-text="Airtime / Data" data-cat="Bills & Utilities">Airtime</span>
+                  <span class="sugg-chip" data-text="Pharmacy / Meds" data-cat="Health">Pharmacy</span>
+                  <span class="sugg-chip" data-text="Drinks / Choma" data-cat="Food & Drinks">Drinks</span>
+                </div>
+              </div>
+
+              <!-- Expense Categories (Exact 8 Categories) -->
+              <div class="form-field">
+                <div class="label-with-selection">
+                  <label class="form-label">Category</label>
+                  <span class="selected-cat-name" id="selected-cat-label">Food & Drinks</span>
+                </div>
+                
+                <div class="category-grid" id="category-picker-grid">
+                  <!-- Populated in app.js with 8 required categories -->
+                </div>
+              </div>
+
+              <!-- Date & Payment Method Row -->
+              <div class="form-row-two-col">
+                <div class="form-field">
+                  <label for="expense-date-input" class="form-label">Date</label>
+                  <input type="date" id="expense-date-input" class="form-input" required>
+                  <div class="date-shortcuts">
+                    <button type="button" class="date-shortcut-btn" id="date-btn-today">Today</button>
+                    <button type="button" class="date-shortcut-btn" id="date-btn-yesterday">Yesterday</button>
+                  </div>
+                </div>
+
+                <div class="form-field">
+                  <label for="expense-payment-method" class="form-label">Payment Mode</label>
+                  <select id="expense-payment-method" class="form-select">
+                    <option value="M-Pesa">M-Pesa</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Card">Card / Bank</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Optional Note -->
+              <div class="form-field">
+                <label for="expense-notes-input" class="form-label">Optional Note</label>
+                <input type="text" id="expense-notes-input" class="form-input" placeholder="e.g. Shared with Brian, Nyama choma at Olepolos">
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="primary-submit-btn" id="save-expense-btn">
+                <span>Save Expense (KES)</span>
+              </button>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- ================= MODAL / BOTTOM SHEET: EDIT EXPENSE ================= -->
+        <div class="sheet-backdrop" id="edit-sheet-backdrop">
+          <div class="bottom-sheet" id="edit-expense-sheet">
+            <div class="sheet-drag-handle"></div>
+            
+            <div class="sheet-header">
+              <h3 class="sheet-title">Edit Expense</h3>
+              <button type="button" class="sheet-close-btn" id="close-edit-sheet-btn">✕</button>
+            </div>
+
+            <form id="edit-expense-form" class="sheet-form">
+              <input type="hidden" id="edit-expense-id">
+
+              <!-- Big Amount Input -->
+              <div class="amount-input-box">
+                <span class="amount-currency-prefix">KES</span>
+                <input type="number" id="edit-amount-input" class="amount-field" placeholder="0" min="1" step="any" required>
+              </div>
+
+              <!-- Description -->
+              <div class="form-field">
+                <label for="edit-desc-input" class="form-label">Description</label>
+                <input type="text" id="edit-desc-input" class="form-input" required>
+              </div>
+
+              <!-- Category -->
+              <div class="form-field">
+                <div class="label-with-selection">
+                  <label class="form-label">Category</label>
+                  <span class="selected-cat-name" id="edit-selected-cat-label">Food & Drinks</span>
+                </div>
+                <div class="category-grid" id="edit-category-picker-grid">
+                  <!-- Populated in app.js -->
+                </div>
+              </div>
+
+              <!-- Date & Payment Method -->
+              <div class="form-row-two-col">
+                <div class="form-field">
+                  <label for="edit-date-input" class="form-label">Date</label>
+                  <input type="date" id="edit-date-input" class="form-input" required>
+                </div>
+
+                <div class="form-field">
+                  <label for="edit-payment-method" class="form-label">Payment Mode</label>
+                  <select id="edit-payment-method" class="form-select">
+                    <option value="M-Pesa">M-Pesa</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Card">Card / Bank</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Note -->
+              <div class="form-field">
+                <label for="edit-notes-input" class="form-label">Note</label>
+                <input type="text" id="edit-notes-input" class="form-input" placeholder="Optional notes">
+              </div>
+
+              <!-- Action Buttons Row -->
+              <div class="edit-action-buttons">
+                <button type="button" class="danger-btn" id="delete-expense-btn">Delete</button>
+                <button type="submit" class="primary-submit-btn flex-1" id="update-expense-btn">Save Changes</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- ================= SNACKBAR / TOAST NOTIFICATION ================= -->
+        <div class="toast-container" id="toast-container">
+          <div class="toast-message" id="toast-message">
+            <span class="toast-text" id="toast-text">Expense recorded!</span>
+            <button type="button" class="toast-undo-btn" id="toast-undo-btn" style="display: none;">Undo</button>
+          </div>
+        </div>
+
+      </div> <!-- End of #app-viewport -->
+    </div> <!-- End of #phone-frame -->
+  </div> <!-- End of #desktop-wrapper -->
+
+  <!-- App Core Scripts -->
+  <script src="./app.js"></script>
+</body>
+</html>
