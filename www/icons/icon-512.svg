@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="ganjiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2652E"/>
+      <stop offset="50%" stop-color="#D95720"/>
+      <stop offset="100%" stop-color="#B84412"/>
+    </linearGradient>
+    <linearGradient id="coinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFDF9"/>
+      <stop offset="100%" stop-color="#F3E1CF"/>
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#802B08" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  
+  <!-- App Icon Background Squircle -->
+  <rect width="512" height="512" rx="115" fill="url(#ganjiGrad)"/>
+  
+  <!-- Subtle decorative ambient ring -->
+  <circle cx="256" cy="256" r="210" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="4"/>
+  <circle cx="256" cy="256" r="160" fill="none" stroke="#FFFFFF" stroke-opacity="0.06" stroke-width="2"/>
+
+  <!-- Main Wallet & Shilling Coin Emblem -->
+  <g filter="url(#softShadow)">
+    <!-- Wallet / Card Holder base -->
+    <rect x="120" y="170" width="272" height="190" rx="28" fill="#FFFDF9"/>
+    
+    <!-- Deep Orange Wallet flap accent -->
+    <path d="M 120 220 Q 256 250 392 220 L 392 198 Q 392 170 364 170 L 148 170 Q 120 170 120 198 Z" fill="#F8EBDD"/>
+    
+    <!-- Shilling Coin / Ganji Token Motif -->
+    <circle cx="256" cy="265" r="46" fill="url(#ganjiGrad)"/>
+    <circle cx="256" cy="265" r="38" fill="none" stroke="#FFFDF9" stroke-width="3" stroke-dasharray="6,4"/>
+    
+    <!-- 'G' or Shilling symbol inside coin -->
+    <text x="256" y="278" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="900" fill="#FFFDF9" text-anchor="middle">G</text>
+
+    <!-- Upward conscious tracking arrow / tick -->
+    <path d="M 175 320 L 225 320" stroke="#D95720" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 285 320 L 335 320" stroke="#E67E22" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Sparkle / Star of awareness -->
+  <path d="M 380 135 Q 380 155 400 155 Q 380 155 380 175 Q 380 155 360 155 Q 380 155 380 135 Z" fill="#FFFDF9" opacity="0.9"/>
+</svg>

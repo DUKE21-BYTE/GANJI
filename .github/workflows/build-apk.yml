@@ -25,16 +25,17 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Install Project Dependencies
         run: |
           npm install
 
+      - name: Prepare Web Assets for Capacitor
+        run: |
+          node copy-www.js
+
       - name: Initialize & Sync Capacitor Android
         run: |
-          npx cap add android
+          npx cap add android || true
           npx cap sync android
 
       - name: Build Debug APK with Gradle

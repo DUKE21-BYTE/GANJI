@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="ganjiGrad192" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2652E"/>
+      <stop offset="50%" stop-color="#D95720"/>
+      <stop offset="100%" stop-color="#B84412"/>
+    </linearGradient>
+  </defs>
+  
+  <rect width="192" height="192" rx="42" fill="url(#ganjiGrad192)"/>
+  
+  <!-- Wallet base -->
+  <rect x="45" y="64" width="102" height="72" rx="12" fill="#FFFDF9"/>
+  <!-- Flap -->
+  <path d="M 45 82 Q 96 94 147 82 L 147 74 Q 147 64 136 64 L 56 64 Q 45 64 45 74 Z" fill="#F8EBDD"/>
+  
+  <!-- Shilling Coin -->
+  <circle cx="96" cy="100" r="18" fill="url(#ganjiGrad192)"/>
+  <text x="96" y="106" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="900" fill="#FFFDF9" text-anchor="middle">G</text>
+</svg>

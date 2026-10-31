@@ -1,8 +1,7 @@
 {
   "appId": "com.ganji.app",
   "appName": "GANJI",
-  "webDir": ".",
-  "bundledWebRuntime": false,
+  "webDir": "www",
   "server": {
     "androidScheme": "https"
   },

@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Your money. Your record. Your control. Lightweight personal expense tracker.",
   "scripts": {
+    "build": "node copy-www.js",
     "start": "node server.js",
-    "cap:add": "cap add android",
-    "cap:sync": "cap sync",
+    "cap:add": "node copy-www.js && cap add android",
+    "cap:sync": "node copy-www.js && cap sync",
     "cap:open": "cap open android"
   },
   "dependencies": {
